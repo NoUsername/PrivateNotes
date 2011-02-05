@@ -1,0 +1,25 @@
+<Addin id="EncryptedFileSystemSyncServiceAddin"
+	namespace="Tomboy"
+	name="Encrypted Directory Sync"
+	author="Paul Klingelhuber"
+	description="Synchronize Tomboy Notes to a local file system path where the notes are stored in an encrypted format"
+	category="Synchronization"
+	defaultEnabled="true"
+	version="0.1">
+
+	<Runtime>
+		<Import assembly="EncryptedFileSystemSyncService.dll" />
+	</Runtime>
+
+	<Dependencies>
+		<Addin id="Tomboy" version="0.10" />
+	</Dependencies>
+
+  <Extension path="/Tomboy/AddinPreferences">
+    <AddinPreferenceFactory type="Tomboy.PrivateNotesLocal.AddinPreferencesFactory" />
+  </Extension>
+
+	<Extension path="/Tomboy/SyncServiceAddins">
+		<SyncServiceAddin type="Tomboy.Sync.EncryptedFileSystemSyncServiceAddin" />
+	</Extension>
+</Addin>

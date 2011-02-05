@@ -1,0 +1,25 @@
+<Addin id="PrivateNotes"
+	namespace="Tomboy"
+	name="Encrypted WebDav Sync"
+	author="Paul Klingelhuber S1010455009@fh-hagenberg.at"
+	description="Synchronization with WebDav Server. Notes are encrypted with AES."
+	category="Synchronization"
+	defaultEnabled="true"
+	version="0.8">
+
+	<Runtime>
+		<Import assembly="PrivateNotes.dll" />
+	</Runtime>
+
+	<Dependencies>
+		<Addin id="Tomboy" version="0.10" />
+	</Dependencies>
+
+	<Extension path="/Tomboy/AddinPreferences">
+		<AddinPreferenceFactory type="Tomboy.PrivateNotes.AddinPreferencesFactory" />
+	</Extension>
+
+  <Extension path="/Tomboy/SyncServiceAddins">
+    <SyncServiceAddin type="Tomboy.Sync.EncryptedWebdavSyncServiceAddin" />
+  </Extension>
+</Addin>
