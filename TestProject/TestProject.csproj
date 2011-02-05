@@ -93,7 +93,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Tomboy\Addins\PrivateNotesAddin\PrivateNotes.csproj">
+    <ProjectReference Include="..\PrivateNotesAddin\PrivateNotes.csproj">
       <Project>{DB9D7C56-4830-4D09-8F9E-95A2F5424AB1}</Project>
       <Name>PrivateNotes</Name>
     </ProjectReference>
