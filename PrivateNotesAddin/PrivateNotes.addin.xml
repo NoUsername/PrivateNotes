@@ -5,7 +5,7 @@
 	description="Synchronization with WebDav Server. Notes are encrypted with AES."
 	category="Synchronization"
 	defaultEnabled="true"
-	version="0.8">
+	version="0.9">
 
 	<Runtime>
 		<Import assembly="PrivateNotes.dll" />
