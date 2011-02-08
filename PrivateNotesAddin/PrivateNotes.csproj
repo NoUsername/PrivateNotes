@@ -65,7 +65,6 @@
     <Compile Include="local\SecurityWrapper.cs" />
     <Compile Include="EncryptedWebdavSyncServiceAddin.cs" />
     <Compile Include="PasswordEntry.cs" />
-    <Compile Include="PrivateNotesApplicationAddin.cs" />
     <Compile Include="AddinPreferences.cs" />
     <Compile Include="AddinPreferencesFactory.cs" />
     <Compile Include="Program.cs" />

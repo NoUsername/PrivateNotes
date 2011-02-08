@@ -27,6 +27,11 @@ namespace Tomboy.PrivateNotes
   public delegate void CreateDirCompleteDel(int statusCode);
   public delegate void DeleteCompleteDel(int statusCode);
 
+	/// <summary>
+	/// takes care of communicating with a webdav server
+	/// not note-sync specific, but general-purpose
+	/// it is used by the WebDAVInterface
+	/// </summary>
   public class WebDAVClient
   {
     public event ListCompleteDel ListComplete;

@@ -10,34 +10,38 @@ namespace Tomboy.PrivateNotes.Crypto
 	public interface CryptoFormat
 	{
 		/// <summary>
-		/// 
+		/// Writes the given contents encrypted with the given key to disk. The target is specified by the filename
 		/// </summary>
-		/// <param name="_filename"></param>
-		/// <param name="_content"></param>
+		/// <param name="_filename">target file</param>
+		/// <param name="_content">contents that will be encrypted</param>
 		/// <param name="_key">the key that is should be used for encryption, it is already hashed (and was salted before)</param>
 		/// <param name="_salt">the salt that was used to salt the key</param>
-		/// <returns></returns>
+		/// <returns>true if successful</returns>
 		bool WriteCompatibleFile(String _filename, byte[] _content, byte[] _key, byte[] _salt);
 
 		/// <summary>
-		/// 
+		/// Reads encrypted data from a stream and decrypts it
 		/// </summary>
-		/// <param name="_filename"></param>
-		/// <param name="fin"></param>
+		/// <param name="_filename">filename has to be given, because you need to know it in order to verify the file</param>
+		/// <param name="fin">the inputstream to read the actual data from</param>
 		/// <param name="_key">the unsalted and unhashed key</param>
-		/// <param name="_wasOk"></param>
-		/// <returns></returns>
+		/// <param name="_wasOk">true if successful</param>
+		/// <returns>the decrypted data</returns>
 		byte[] DecryptFromStream(String _filename, Stream fin, byte[] _key, out bool _wasOk);
 
 		/// <summary>
-		/// 
+		/// decrypts data from a file. same as DecryptFromStream, but the encrypted data is taken from a file
 		/// </summary>
-		/// <param name="_filename"></param>
+		/// <param name="_filename">the file to read from</param>
 		/// <param name="_key">the unsalted and unhashed key</param>
-		/// <param name="_wasOk"></param>
-		/// <returns></returns>
+		/// <param name="_wasOk">true if everything was ok</param>
+		/// <returns>the decrypted data</returns>
 		byte[] DecryptFile(String _filename, byte[] _key, out bool _wasOk);
 
+		/// <summary>
+		/// returns the version number of the encryption format
+		/// </summary>
+		/// <returns>version number as int</returns>
 		int Version();
 	}
 
@@ -48,6 +52,9 @@ namespace Tomboy.PrivateNotes.Crypto
 	{
 		private static CryptoFormatProviderFactory SINGLETON = new CryptoFormatProviderFactory();
 
+		/// <summary>
+		/// get an instance of the factory
+		/// </summary>
 		public static CryptoFormatProviderFactory INSTANCE {
 			get {
 				return SINGLETON;
@@ -56,14 +63,23 @@ namespace Tomboy.PrivateNotes.Crypto
 
 		private CryptoFormat defaultFormat = new CryptoFileFormatRev1();
 
+		/// <summary>
+		/// getting the default crypto format
+		/// </summary>
+		/// <returns></returns>
 		public CryptoFormat GetCryptoFormat()
 		{
 			return defaultFormat; 
 		}
 
+		/// <summary>
+		/// get crypto format by version number
+		/// throws an exception if there is no such version
+		/// </summary>
+		/// <param name="version">by version number</param>
+		/// <returns>crypto object</returns>
 		public CryptoFormat GetCryptoFormat(int version)
 		{
-			// TODO implement stuff for different versions
 			switch (version)
 			{
 				case 0:
@@ -76,21 +92,27 @@ namespace Tomboy.PrivateNotes.Crypto
 					throw new Exception("Unknown encryption version");
 					//break; // not needed because of throw
 			}
-
-			return defaultFormat;
 		}
 		
 
 	}
 
 	
-
-
+	/// <summary>
+	/// util for encryption/decrypting with aes in PrivateNotes-fashion
+	/// that means that IV will be prepended to the actual data, if the data size is equal to 
+	/// the cyphers blocksize the ECB mode is used, if not the CBC mode is used
+	/// </summary>
 	public class AESUtil
 	{
 		private const int SALT_SIZE = 32;
 		private static Random random_source = new Random();
 
+		/// <summary>
+		/// calculate the SHA256 hash
+		/// </summary>
+		/// <param name="_data">data to hash</param>
+		/// <returns>hash value</returns>
 		public static byte[] CalculateHash(byte[] _data)
 		{
 			return System.Security.Cryptography.SHA256.Create().ComputeHash(_data);
@@ -126,6 +148,12 @@ namespace Tomboy.PrivateNotes.Crypto
 			return result;
 		}
 
+		/// <summary>
+		/// encrypt data and write it to a file
+		/// </summary>
+		/// <param name="_key">the key to use</param>
+		/// <param name="_data">the data to encrypt</param>
+		/// <param name="_toFile">the file to write to</param>
 		public static void Encrypt(byte[] _key, byte[] _data, String _toFile)
 		{
 			byte[] encrypted = Encrypt(_key, _data);
@@ -178,6 +206,12 @@ namespace Tomboy.PrivateNotes.Crypto
 			return mem.ToArray();
 		}
 
+		/// <summary>
+		/// decrypt data from a file
+		/// </summary>
+		/// <param name="_key">the key to use</param>
+		/// <param name="_fromFile">file from where the encrypted data is read</param>
+		/// <returns>the decrypted plaintext</returns>
 		public static byte[] Decrypt(byte[] _key, String _fromFile)
 		{
 			FileStream fin = new FileStream(_fromFile, FileMode.Open, FileAccess.Read);
@@ -238,6 +272,10 @@ namespace Tomboy.PrivateNotes.Crypto
 	/// </summary>
 	public class EncryptionException : Exception {
 
+		/// <summary>
+		/// create an encryption exception with a textual message
+		/// </summary>
+		/// <param name="_msg">some text describing the error</param>
 		public EncryptionException(String _msg) : base(_msg)
 		{
 			
@@ -251,6 +289,10 @@ namespace Tomboy.PrivateNotes.Crypto
 	public class PasswordException : Exception
 	{
 
+		/// <summary>
+		/// create an Password exception with a textual message
+		/// </summary>
+		/// <param name="_msg">some text describing the error</param>
 		public PasswordException(String _msg)
 			: base(_msg)
 		{
@@ -258,6 +300,5 @@ namespace Tomboy.PrivateNotes.Crypto
 		}
 
 	}
-
 
 }

@@ -6,6 +6,13 @@ using Mono.Unix;
 
 namespace Tomboy.PrivateNotes
 {
+	/// <summary>
+	/// utility class that is able to display a password-entry
+	/// dialog, while the sync process is running.
+	/// not that straightforward, because we are running in a separate
+	/// thread (the sync-thread) and not the gui thread, so we have to 
+	/// take care of that
+	/// </summary>
 	public class PasswordEntry : Gtk.Dialog
 	{
 		AutoResetEvent autoReset;
@@ -123,6 +130,12 @@ namespace Tomboy.PrivateNotes
 			OnAction(null, null);
 		}
 
+		/// <summary>
+		/// returns the password that was entered
+		/// WARNING: after you called this, the gui of this object cannot be reused! (because
+		/// destory is called)
+		/// </summary>
+		/// <returns>the password that was entered</returns>
 		public String getPassword()
 		{
 			String password = null;

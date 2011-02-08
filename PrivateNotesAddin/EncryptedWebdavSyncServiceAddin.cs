@@ -10,8 +10,31 @@ using Tomboy;
 using Tomboy.PrivateNotes;
 using Tomboy.PrivateNotes.Crypto;
 
+/*! \mainpage PrivateNotes TomboyAddin Start Page
+ *
+ * \section intro_sec Introduction
+ *
+ * Welcome to the PrivateNotes TomboyAddin documentation. <br/>
+ * 
+ * Here you find the extracted code-documentation. To get more information/stuff go
+ * to <a href="http://privatenotes.dyndns-server.com/wiki/">our project website
+ * privatenotes.dyndns-server.com/wiki/</a>.
+ *
+ * \section start_sec Getting started
+ *
+ * If you want to get started reading some documentation a good starting point might
+ * be Tomboy.PrivateNotes.EncryptedWebdavSyncServer or more specifically the "Member List"
+ * on that page.
+ *  
+ */
 namespace Tomboy.Sync
 {
+
+	/// <summary>
+	/// the actual addin class.
+	/// responsible for creating the sync server object and handling the
+	/// sync-preferences gui (sync tab in tomboy prefs)
+	/// </summary>
 	public class EncryptedWebdavSyncServiceAddin : SyncServiceAddin
 	{
 		// TODO: Extract most of the code here and build GenericSyncServiceAddin
@@ -316,6 +339,12 @@ namespace Tomboy.Sync
 
 		#region Gui Setup Methods
 
+		/// <summary>
+		/// setup fields like: store password:yes/no and the actual password entry,
+		/// if it should be stored
+		/// </summary>
+		/// <param name="insertTo"></param>
+		/// <param name="defaultSpacing"></param>
 		void SetupGuiEncryptionRelated(Gtk.Box insertTo, int defaultSpacing)
 		{
 			Gtk.HBox customBox = new Gtk.HBox(false, defaultSpacing);
@@ -384,6 +413,14 @@ namespace Tomboy.Sync
 			stored_pw2.Changed += PasswordChanged;
 		}
 
+		/// <summary>
+		/// server gui stuff:
+		/// server path
+		/// server username + password
+		/// check server ssl certificate yes/no
+		/// </summary>
+		/// <param name="insertTo"></param>
+		/// <param name="defaultSpacing"></param>
 		void SetupGuiServerRelated(Gtk.Box insertTo, int defaultSpacing)
 		{
 			Gtk.Table customBox = new Gtk.Table(3, 2, false);

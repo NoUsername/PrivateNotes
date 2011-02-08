@@ -8,6 +8,8 @@ namespace Tomboy.PrivateNotes
 {
 	/// <summary>
 	/// encapsulates wedav calls with a sync-server
+	/// 
+	/// special interface for notes-syncing (knows about lock-file and .note-files)
 	/// </summary>
 	public class WebDAVInterface
 	{

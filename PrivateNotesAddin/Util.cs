@@ -7,18 +7,31 @@ using System.IO;
 
 namespace Tomboy.PrivateNotes
 {
+
+	/// <summary>
+	/// util class
+	/// filesystem and byte-conversion related helpers
+	/// </summary>
   public class Util
   {
 #if RANDOM_PADDING
     private static Random random = new Random();
 #endif
 
+		/// <summary>
+		/// makes sure that a file exists
+		/// </summary>
+		/// <param name="_path"></param>
     public static void AssureFileExists(String _path)
     {
       if (!File.Exists(_path))
         File.Create(_path).Close();
     }
 
+		/// <summary>
+		/// deletes all files in a directory (not sub-directories!)
+		/// </summary>
+		/// <param name="_path"></param>
     public static void DelelteFilesInDirectory(String _path)
     {
       DirectoryInfo info = new DirectoryInfo(_path);
@@ -28,13 +41,22 @@ namespace Tomboy.PrivateNotes
       }
     }
 
+		/// <summary>
+		/// convert from a unix timestamp to a c# dateTime object
+		/// </summary>
+		/// <param name="timestamp"></param>
+		/// <returns></returns>
     public static DateTime ConvertFromUnixTimestamp(long timestamp)
     {
       DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
       return origin.AddSeconds(timestamp);
     }
 
-
+		/// <summary>
+		/// converts a c# dateTime object to a unix timestamp
+		/// </summary>
+		/// <param name="date"></param>
+		/// <returns></returns>
     public static long ConvertToUnixTimestamp(DateTime date)
     {
       DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
@@ -42,16 +64,32 @@ namespace Tomboy.PrivateNotes
       return (long)Math.Floor(diff.TotalSeconds);
     }
 
+		/// <summary>
+		/// string to bytes (to have one central place where the codepage is defined)
+		/// </summary>
+		/// <param name="_s"></param>
+		/// <returns></returns>
     public static byte[] GetBytes(String _s)
     {
       return Encoding.UTF8.GetBytes(_s);
     }
 
+		/// <summary>
+		/// bytes to stirng (to have one central place where the codepage is defined)
+		/// </summary>
+		/// <param name="_data"></param>
+		/// <returns></returns>
     public static String FromBytes(byte[] _data)
     {
       return Encoding.UTF8.GetString(_data);
     }
 
+		/// <summary>
+		/// check if 2 byte arrays are equal
+		/// </summary>
+		/// <param name="_array1"></param>
+		/// <param name="_array2"></param>
+		/// <returns></returns>
     public static bool ArraysAreEqual(byte[] _array1, byte[] _array2)
     {
       if (_array1 == null || _array2 == null)
@@ -68,6 +106,12 @@ namespace Tomboy.PrivateNotes
       return true;
     }
 
+		/// <summary>
+		/// pad some byte-data to a certain length
+		/// </summary>
+		/// <param name="_data"></param>
+		/// <param name="_multipleOf"></param>
+		/// <returns></returns>
     public static byte[] padData(byte[] _data, int _multipleOf)
     {
       int tooMuch = _data.Length % _multipleOf;
@@ -205,7 +249,10 @@ namespace Tomboy.PrivateNotes
 #endif
 
 
-
+	/// <summary>
+	/// gtk helper
+	/// some small useful helpers that make certain things easier with the gtk lib
+	/// </summary>
   public class GtkUtil
   {
     public static void ShowHintWindow(Gtk.Widget parent, String caption, String text)
